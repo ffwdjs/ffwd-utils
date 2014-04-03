@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "name": "ffwd-utils",
+  "version": "0.0.1",
+  "description": "A utility toolbelt for FFWD",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha -b test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zeropaper/ffwd-utils.git"
+  },
+  "keywords": [
+    "utility",
+    "FFWD"
+  ],
+  "author": "Valentin Vago <zeropaper@irata.ch>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zeropaper/ffwd-utils/issues"
+  },
+  "homepage": "https://github.com/zeropaper/ffwd-utils",
+  "dependencies": {
+    "fetch": "^0.3.6",
+    "underscore": "^1.6.0",
+    "underscore.string": "^2.3.3"
+  },
+  "devDependencies": {
+    "mocha": "^1.18.2"
+  }
+}
