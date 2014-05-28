@@ -3,16 +3,20 @@
 var fs = require('fs');
 var path = require('path');
 
-var utils = module.exports = require('./client');
+var utils = module.exports = require('ffwd-utils');
 // console.info('utils', utils);
 var _ = utils._;
 
 var fetch = utils.fetch = require('fetch').fetchUrl;
 
 /**
- * Modules loading utility
+ * Loads the modules located in a directory with a file name
+ * who does not starts with "_" and is not "index.js"
+ *
+ * @param {string} dirPath is the path of the directory
+ * @return {object<string,*>} an object with the loaded modules and their name as object key
  */
-utils.loadDirectory = function(dirPath, exclude) {
+utils.loadDirectory = function(dirPath) {
   var loaded = {};
 
   _.each(fs.readdirSync(dirPath), function(file) {
@@ -25,6 +29,25 @@ utils.loadDirectory = function(dirPath, exclude) {
   return loaded;
 };
 
+
+utils.loadFeatures = function(features, config) {
+  config = config || {};
+  var subject = config.subject || {};
+
+  _.each(features, function(feature, name) {
+    var conf = _.clone(config[name] || {});
+    var callback = feature;
+
+    if (!_.isFunction(callback)) {
+      _.extend(conf, feature);
+      callback = require(name +'/server');
+    }
+    
+    subject[name.split('ffwd-').pop()] = callback(conf, subject);
+  });
+
+  return subject;
+};
 
 /**
  * Utility to get the content of the online JSON schema

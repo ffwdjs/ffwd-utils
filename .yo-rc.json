@@ -1,0 +1,8 @@
+{
+  "generator-ffwd": {
+    "projectName": "ffwd-utils",
+    "projectDesc": "A utility toolbelt for FFWD",
+    "projectVersion": "0.0.2",
+    "projectAuthor": "Valentin Vago <valentin.vago@gmail.com>"
+  }
+}

@@ -40,7 +40,11 @@
     var paths = varPath.split(separator || '.')
       , current = obj
       , i;
-    
+
+    if (!varPath) {
+      throw new Error('a path must be specified');
+    }
+
     for (i = 0; i < paths.length; ++i) {
       if (typeof current[paths[i]] === 'undefined') {
         throw new Error('The path "'+ varPath +'" can not be accessed.');
