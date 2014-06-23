@@ -4,6 +4,7 @@
   "version": "0.0.2",
   "description": "A utility toolbelt for FFWD",
   "main": "client/scripts/index.js",
+  "browser": "client/scripts/index.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha -b test/server/**/*Spec.js"
   },
