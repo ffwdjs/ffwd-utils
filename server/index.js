@@ -58,12 +58,11 @@ utils.features = function(moduleName) {
 
 
 utils.featuresFiles = function(wanted, moduleName) {
-  wanted = wanted || '**/*.js';
+  wanted = wanted || '/{client/scripts,server}/**/*.js';
   var files = [];
 
   _.each(utils.features(moduleName), function(fPath, fName) {
-    files.push(fPath +'/client/scripts/'+ wanted);
-    files.push(fPath +'/server/'+ wanted);
+    files.push(fPath + wanted);
   });
 
   return files;
