@@ -66,8 +66,6 @@ utils.features = function(moduleName, check) {
   return deps;
 };
 
-
-
 /**
  * Creates a list of minimatch compatible strings
  * @param  {String} wanted     a rule to be append to the path to moduleName
@@ -167,3 +165,23 @@ utils.fetchOrRead = function(cachePath, done) {
     done(null, json);
   });
 };
+
+
+/**
+ * Map paths to static content
+ * @param  {Object} conf              [description]
+ * @param  {Express.Application} app  [description]
+ */
+utils.staticContent = function(staticContent, app) {
+  _.each(staticContent || {}, function(route, dir) {
+    var directory = path.join(conf.projectDir, dir);
+    var middleware = express.static(directory);
+
+    if (route) {
+      app.use(route, middleware);
+    }
+    else {
+      app.use(middleware);
+    }
+  });
+}
