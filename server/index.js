@@ -14,11 +14,10 @@ var fetch = utils.fetch = require('fetch').fetchUrl;
  * To be used by FFWD projects to get the features of a project
  * @return {Object.<String,String>} name / path object
  */
-utils.features = function(moduleName) {
+utils.features = function(moduleName, check) {
   moduleName = moduleName || process.cwd();
   var type;
   var name;
-  var info;
   var depPath;
   var d;
   var depTypes  = [
@@ -28,7 +27,12 @@ utils.features = function(moduleName) {
     'peerDependencies',
     'bundleDependencies'
   ];
+  
+  function featureCheck(info) {
+    return (info.keywords || []).indexOf('ffwdfeature') > -1 || info.name.indexOf('ffwd-') === 0;
+  }
 
+  check = check || featureCheck;
   var pkg = require(path.join(moduleName, 'package.json'));
 
   var deps = {};
@@ -37,16 +41,24 @@ utils.features = function(moduleName) {
 
     if (!!pkg[depTypes[d]]) {
       var typeDeps = pkg[depTypes[d]];
+      // console.info('wqdswedwedwedewd', moduleName, type, typeDeps);
+  
       for (name in typeDeps) {
         try {
           depPath = require.resolve(path.join(name, 'package.json'));
-          
-          info = require(depPath);
 
-          if ((info.keywords || []).indexOf('ffwdfeature') > -1 || info.name.indexOf('ffwd-') === 0) {
+          console.info('wqdswedwedwedewd', depPath);
+     
+          var info = require(depPath);
+          info = info || {};
+          info.depPath = depPath;
+
+          if (check(info)) {
             deps[name] = path.dirname(depPath);
           }
-        } catch (err) {}
+        } catch (err) {
+
+        }
       }
     }
   }
@@ -56,7 +68,12 @@ utils.features = function(moduleName) {
 
 
 
-
+/**
+ * Creates a list of minimatch compatible strings
+ * @param  {String} wanted     a rule to be append to the path to moduleName
+ * @param  {String} moduleName 
+ * @return {Array}             an array with the minimatch rules
+ */
 utils.featuresFiles = function(wanted, moduleName) {
   wanted = wanted || '/{client/scripts,server}/**/*.js';
   var files = [];

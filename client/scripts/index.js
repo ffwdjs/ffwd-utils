@@ -26,6 +26,9 @@
   _.str.lcFirst = function(str) {
     return str[0].toLowerCase() + str.slice(1);
   };
+  _.str.ucFirst = function(str) {
+    return str[0].toUpperCase() + str.slice(1);
+  };
 
   /**
    * Utility to get a value deep in a object.
