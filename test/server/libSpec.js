@@ -1,4 +1,5 @@
-var expect = require('expect.js');
+// var expect = require('expect.js');
+var expect = require('chai').expect;
 var utils = require('./../utils');
 
 
@@ -13,11 +14,11 @@ describe('the utilities toolbelt for FFWD', function() {
     it('has underscore and underscore.string', function() {
       expect(function() {
         clientLib = require('ffwd-utils');
-      }).not.to.throwError(utils.stackPutz);
+      }).to.not.throw(utils.stackPutz);
 
-      expect(clientLib._).to.be.ok();
+      expect(clientLib._).to.be.ok;
 
-      expect(clientLib._.str).to.be.ok();
+      expect(clientLib._.str).to.be.ok;
     });
   });
 
@@ -26,6 +27,6 @@ describe('the utilities toolbelt for FFWD', function() {
   it('provides server side specific tools', function() {
     expect(function() {
       serverLib = require('ffwd-utils/server');
-    }).not.to.throwError(utils.stackPutz);
+    }).to.not.throw(utils.stackPutz);
   });
 });
