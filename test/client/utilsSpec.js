@@ -1,6 +1,5 @@
-// var expect = require('expect.js');
-var expect = require('chai').expect;
 var utils = require('./../utils');
+var expect = utils.expect;
 
 describe('ffwd-utils/client', function() {
   var clientLib;
