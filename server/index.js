@@ -9,6 +9,25 @@ var _ = utils._;
 
 var fetch = utils.fetch = require('fetch').fetchUrl;
 
+var glob = utils.glob = require('glob');
+
+
+/**
+ * find repositories of a project
+ * @param  {string} [dir] a base directory (or module name)
+ * @param  {string} [done] a base directory (or module name)
+ * @return {array}     an array of paths to the directories haviing a repository
+ */
+utils.repositories = function(dir) {
+  var done = arguments[arguments.length - 1];
+  var globbing = (_.isString(dir) ? dir +'/' : '') +'node_modules/*/.git';
+
+  if (_.isFunction(done)) {
+    return glob(globbing, {}, done);
+  }
+
+  return glob(globbing, {});
+};
 
 /**
  * To be used by FFWD projects to get the features of a project
@@ -27,7 +46,7 @@ utils.features = function(moduleName, check) {
     'peerDependencies',
     'bundleDependencies'
   ];
-  
+
   function featureCheck(info) {
     return (info.keywords || []).indexOf('ffwdfeature') > -1 || info.name.indexOf('ffwd-') === 0;
   }
@@ -42,13 +61,13 @@ utils.features = function(moduleName, check) {
     if (!!pkg[depTypes[d]]) {
       var typeDeps = pkg[depTypes[d]];
       // console.info('wqdswedwedwedewd', moduleName, type, typeDeps);
-  
+
       for (name in typeDeps) {
         try {
           depPath = require.resolve(path.join(name, 'package.json'));
 
           console.info('wqdswedwedwedewd', depPath);
-     
+
           var info = require(depPath);
           info = info || {};
           info.depPath = depPath;
@@ -69,7 +88,7 @@ utils.features = function(moduleName, check) {
 /**
  * Creates a list of minimatch compatible strings
  * @param  {String} wanted     a rule to be append to the path to moduleName
- * @param  {String} moduleName 
+ * @param  {String} moduleName
  * @return {Array}             an array with the minimatch rules
  */
 utils.featuresFiles = function(wanted, moduleName) {
@@ -124,7 +143,7 @@ utils.loadFeatures = function(features, config) {
       _.extend(conf, feature);
       callback = require(name +'/server');
     }
-    
+
     subject[name.split('ffwd-').pop()] = callback(conf, subject);
   });
 
@@ -136,7 +155,7 @@ utils.loadFeatures = function(features, config) {
  * or its locally cached version.
  *
  * @param {string} cachedPath  - The path where the cached version should be
- * @param {miscCallback} done  - The callback handling the 
+ * @param {miscCallback} done  - The callback handling the
  */
 utils.fetchOrRead = function(cachePath, done) {
   fs.readFile(cachePath, 'utf8', function(err, data) {
@@ -157,7 +176,7 @@ utils.fetchOrRead = function(cachePath, done) {
 
     var json;
     try {
-      json = JSON.parse(data.toString());      
+      json = JSON.parse(data.toString());
     }
     catch (err) {
       return done(err);
