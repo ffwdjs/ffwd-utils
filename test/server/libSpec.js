@@ -1,12 +1,10 @@
 var expect = require('expect.js');
-function stackPutz(err) {
-  console.warn((''+ err.stack).split(process.cwd()).join(''));
-}
+var utils = require('./../utils');
 
 
 
 describe('the utilities toolbelt for FFWD', function() {
-  var client, server;
+  var clientLib, serverLib;
 
 
 
@@ -14,30 +12,12 @@ describe('the utilities toolbelt for FFWD', function() {
   describe('for the client', function() {
     it('has underscore and underscore.string', function() {
       expect(function() {
-        client = require('ffwd-utils');
-      }).not.to.throwError(stackPutz);
+        clientLib = require('ffwd-utils');
+      }).not.to.throwError(utils.stackPutz);
 
-      expect(client._).to.be.ok();
+      expect(clientLib._).to.be.ok();
 
-      expect(client._.str).to.be.ok();
-    });
-
-
-    describe('atPath function', function() {
-      it('takes an object as first argument', function() {
-        expect(client.atPath).to.throwError();
-      });
-
-
-      it('takes a string as second argument', function() {
-        expect(function() {
-          client.atPath({foo: 'bar'});
-        }).to.throwError();
-
-        expect(function() {
-          client.atPath({foo: 'bar'}, 'foo');
-        }).not.to.throwError(stackPutz);
-      });
+      expect(clientLib._.str).to.be.ok();
     });
   });
 
@@ -45,7 +25,7 @@ describe('the utilities toolbelt for FFWD', function() {
 
   it('provides server side specific tools', function() {
     expect(function() {
-      server = require('ffwd-utils/server');
-    }).not.to.throwError(stackPutz);
+      serverLib = require('ffwd-utils/server');
+    }).not.to.throwError(utils.stackPutz);
   });
 });

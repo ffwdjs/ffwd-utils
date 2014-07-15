@@ -33,30 +33,50 @@
   /**
    * Utility to get a value deep in a object.
    *
-   * @param obj {Object}          - an object to dig in
-   * @param varPath {string} - the path at which the value is searched
+   * @param {Object} obj          - an object to dig in
+   * @param {string} varPath      - the path at which the value is searched
+   * @param {*} newValue          - new value at the path, will not throw errors if not undefined
    * @returns {*}
    * @throws an error telling that the value can not be found at the specified path
    */
-  utils.atPath = function(obj, varPath, separator) {
+  utils.atPath = function(obj, varPath, newValue) {
     'use strict';
-    var paths = varPath.split(separator || '.')
+    var paths = varPath.split('.')
       , current = obj
-      , i;
+      , i
+      , val
+      , name
+      , set
+      , setNow;
 
     if (!varPath) {
-      throw new Error('a path must be specified');
+      throw new Error('Missing argument, `obj` and `path` are required.');
     }
 
     for (i = 0; i < paths.length; ++i) {
-      if (typeof current[paths[i]] === 'undefined') {
-        throw new Error('The path "'+ varPath +'" can not be accessed.');
-      } else {
-        current = current[paths[i]];
+      name = paths[i];
+      val = current[name]; 
+      setNow = paths.length - i === 1;
+      
+      if (_.isUndefined(val)) {
+        if (set) {
+          throw new Error('The path "'+ varPath +'" can not be accessed.');
+        }
+
+        if (setNow) {
+          current[name] = newValue;
+          return obj;
+        }
+
+        current[name] = val || {};
+        current = current[name];
+      }
+      else {
+        current = val;
       }
     }
 
-    return current;
+    return set ? obj : current;
   };
 
   _.mixin({
