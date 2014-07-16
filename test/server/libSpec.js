@@ -15,11 +15,24 @@ describe('the utilities toolbelt for FFWD', function() {
 
 
   describe('repositories', function() {
+    before(function(done) {
+      done();
+    });
 
-  });
+
+    it('is a function', function() {
+      expect(serverLib.repositories).to.be.a('function');
+    });
 
 
-  describe('features related', function() {
+    it('is async if the last argument is a function', function(done) {
+      serverLib.repositories(function(err, files) {
+        expect(err).to.not.be.ok;
+        expect(files).to.be.an('array');
 
+        console.info(files);
+        done();
+      });
+    });
   });
 });

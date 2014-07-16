@@ -25,6 +25,8 @@
   "homepage": "https://github.com/zeropaper/ffwd-utils",
   "dependencies": {
     "fetch": "^0.3.6",
+    "glob": "^4.0.4",
+    "tmp": "0.0.24",
     "underscore": "^1.6.0",
     "underscore.string": "^2.3.3"
   },

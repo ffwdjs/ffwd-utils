@@ -19,14 +19,23 @@ var glob = utils.glob = require('glob');
  * @return {array}     an array of paths to the directories haviing a repository
  */
 utils.repositories = function(dir) {
-  var done = arguments[arguments.length - 1];
-  var globbing = (_.isString(dir) ? dir +'/' : '') +'node_modules/*/.git';
+  var globbing = (_.isString(dir) ? dir +'/' : '');
+  globbing = globbing +'*/**/.git';
 
-  if (_.isFunction(done)) {
-    return glob(globbing, {}, done);
+  function stripGit(str) {
+    // return str.split('/').slice(-2)[0];
+    return str.split('/.git').shift();
   }
 
-  return glob(globbing, {});
+  var done = arguments[arguments.length - 1];
+  if (_.isFunction(done)) {
+    return glob(globbing, {}, function(err, files) {
+      if (err) { return done(err); }
+      done(null, _.map(files, stripGit));
+    });
+  }
+
+  return _.map(glob.sync(globbing, {}), stripGit);
 };
 
 /**
