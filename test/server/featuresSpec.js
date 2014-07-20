@@ -4,6 +4,6 @@ var utils = require('./../utils');
 
 
 
-describe('ffwd-utils/server features helpers', function() {
+describe('ffwd-utils/server features', function() {
 
 });

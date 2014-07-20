@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/zeropaper/ffwd-utils.git"
+    "url": "git://github.com/ffwdjs/ffwd-utils.git"
   },
   "keywords": [
     "utilities",
@@ -20,18 +20,27 @@
   "author": "Valentin Vago <valentin.vago@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zeropaper/ffwd-utils/issues"
+    "url": "https://github.com/ffwdjs/ffwd-utils/issues"
   },
-  "homepage": "https://github.com/zeropaper/ffwd-utils",
+  "homepage": "https://github.com/ffwdjs/ffwd-utils",
   "dependencies": {
     "fetch": "^0.3.6",
     "glob": "^4.0.4",
     "tmp": "0.0.24",
     "underscore": "^1.6.0",
-    "underscore.string": "^2.3.3"
+    "underscore.string": "^2.3.3",
+    "async": "~0.9.0",
+    "multiline": "~0.3.4",
+    "debug": "~1.0.4"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
-    "chai": "~1.9.1"
+    "chai": "~1.9.1",
+    "karma": "~0.12.19",
+    "karma-chrome-launcher": "~0.1.4",
+    "karma-mocha": "~0.1.6",
+    "karma-requirejs": "~0.2.2",
+    "karma-phantomjs-launcher": "~0.1.4",
+    "chai-spies": "~0.5.1"
   }
 }

@@ -1,20 +1,23 @@
-var utils = require('./../utils');
-var expect = utils.expect;
-
 describe('ffwd-utils/client', function() {
+  'use strict';
+  var expect;
   var clientLib;
-
-  it('does not blow', function() {
-    expect(function() {
-      clientLib = require('./../../client/scripts');
-    }).to.not.throw(utils.stackPutz);
+  var utils;
+  before(function() {
+    utils = require('test-utils');
+    expect = utils.expect;
   });
 
-  it('has underscore and underscore.string', function() {
-    expect(function() {
-      clientLib = require('ffwd-utils');
-    }).to.not.throw(utils.stackPutz);
 
+  it('does not blow', function(done) {
+    require(['ffwd-utils'], function(loaded) {
+      clientLib = loaded;
+      done();
+    }, done);
+  });
+
+
+  it('has underscore and underscore.string', function() {
     expect(clientLib._).to.be.ok;
 
     expect(clientLib._.str).to.be.ok;
@@ -58,6 +61,41 @@ describe('ffwd-utils/client', function() {
       }).to.not.throw(utils.stackPutz);
 
       expect(verif).to.be.equal('bar!');
+    });
+  });
+
+  describe('weightened function', function() {
+    it('sorts objects based on a "weight" property', function() {
+      var sorted, keys;
+      var obj = {
+        a: {
+          name: 'a',
+          weight: 1
+        },
+        b: {
+          name: 'b'
+        },
+        c: {
+          name: 'c',
+          weight: -1
+        }
+      };
+
+      expect(function() {
+        sorted = clientLib.weightened(obj);
+        keys = Object.keys(sorted);
+      }).to.not.throw();
+
+
+      expect(sorted).to.be.an('object');
+      expect(sorted.a).to.be.an('object');
+      expect(sorted.b).to.be.an('object');
+      expect(sorted.c).to.be.an('object');
+
+
+      expect(keys.indexOf('a')).to.equal(2);
+      expect(keys.indexOf('b')).to.equal(1);
+      expect(keys.indexOf('c')).to.equal(0);
     });
   });
 });
