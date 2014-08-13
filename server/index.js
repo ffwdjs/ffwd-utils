@@ -53,7 +53,9 @@ utils.repositories = function(dir) {
   return _.map(glob.sync(globbing, {}), stripGit);
 };
 
-
+utils.readJSON = function(filepath) {
+  return JSON.parse(fs.readFileSync(filepath), {encoding: 'utf8'});
+};
 
 
 /**
@@ -79,7 +81,9 @@ utils.features = function(moduleName, check) {
   }
 
   check = check || featureCheck;
-  var pkg = require(path.join(moduleName, 'package.json'));
+  var pkgPath = path.join(moduleName, 'package.json');
+  debug('Features package.json path %s', pkgPath);
+  var pkg = utils.readJSON(pkgPath);
 
   var deps = {};
   for (d in depTypes) {
@@ -92,7 +96,7 @@ utils.features = function(moduleName, check) {
         try {
           depPath = require.resolve(path.join(process.cwd(), 'node_modules', name, 'package.json'));
 
-          var info = require(depPath);
+          var info = utils.readJSON(depPath);
           info = info || {};
           info.depPath = depPath;
 
